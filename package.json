@@ -1,0 +1,22 @@
+{
+  "name": "@robotico/resilience",
+  "version": "0.1.0",
+  "description": "Robotico Resilience — retry, circuit breaker, timeout for TypeScript.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist/**/*"],
+  "scripts": {
+    "build": "tsc",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:1})\""
+  },
+  "keywords": ["robotico", "resilience", "retry", "circuit-breaker", "timeout"],
+  "author": "Robotico",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robotico-dev/robotico-resilience-typescript"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
