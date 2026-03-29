@@ -1,6 +1,6 @@
 # Publish @robotico-dev/resilience to GitHub Packages (npm).
 # Trigger: create a Release (published) or run workflow_dispatch.
-# GitHub Packages npm auth: org secret NUGET_API_KEY (PAT; name is historical — same token you use locally).
+# npm auth: secrets.NUGET_API_KEY (PAT) when set; else GITHUB_TOKEN (e.g. private repos where org secret is public-only).
 name: Build and Publish
 
 on:
@@ -20,7 +20,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY }}
+      NODE_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY || secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v6
 
@@ -49,7 +49,7 @@ jobs:
       packages: write
       id-token: write   # required for npm publish --provenance (attestation)
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY }}
+      NODE_AUTH_TOKEN: ${{ secrets.NUGET_API_KEY || secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v6
 
