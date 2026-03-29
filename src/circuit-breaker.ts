@@ -31,9 +31,7 @@ export class CircuitBreaker {
   /**
    * Like {@link execute}, but returns `Result<T>` (open circuit or operation failure as `Err`).
    */
-  async executeResult<T>(
-    operation: () => Promise<T>
-  ): Promise<Result<T>> {
+  executeResult<T>(operation: () => Promise<T>): Promise<Result<T>> {
     return tryAsync(() => this.execute(operation));
   }
 

@@ -5,7 +5,7 @@ import { withTimeout } from "./with-timeout.js";
 /**
  * Like {@link withTimeout}, but returns `Result<T>` instead of rejecting on timeout.
  */
-export async function withTimeoutResult<T>(
+export function withTimeoutResult<T>(
   promise: Promise<T>,
   timeoutMs: number
 ): Promise<Result<T>> {
