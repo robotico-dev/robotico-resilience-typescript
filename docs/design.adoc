@@ -1,0 +1,9 @@
+= @robotico-dev/resilience — design
+
+== Goals
+
+Retry with backoff, circuit breaker, and timeout helpers for async operations. API aligned with Robotico.Resilience (C#) semantics where applicable.
+
+== Quality bar
+
+link:../../docs/adr/0001-quality-bar.md[ADR 0001]: strict TypeScript, high test coverage, property tests for retry/circuit transitions, benchmarks for hot paths.

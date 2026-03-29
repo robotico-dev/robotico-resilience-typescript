@@ -17,6 +17,13 @@ dist/
 .DS_Store
 Thumbs.db
 
+docs/api/
+
+# SBOM (generated in CI / verify:full)
+sbom.cdx.json
+
 # Test / coverage
 coverage/
 .nyc_output/
+.stryker-tmp/
+reports/mutation/

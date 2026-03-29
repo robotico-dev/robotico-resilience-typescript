@@ -1,22 +1,73 @@
 {
-  "name": "@robotico/resilience",
-  "version": "0.1.0",
+  "name": "@robotico-dev/resilience",
+  "version": "1.0.1",
   "description": "Robotico Resilience — retry, circuit breaker, timeout for TypeScript.",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/**/*"],
-  "scripts": {
-    "build": "tsc",
-    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:1})\""
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
-  "keywords": ["robotico", "resilience", "retry", "circuit-breaker", "timeout"],
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "tsc",
+    "clean": "node --input-type=module -e \"import fs from 'fs'; fs.rmSync('dist',{recursive:true,force:true});\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --max-warnings 0",
+    "docs": "typedoc",
+    "verify": "npm run lint && npm run build && npm run test:coverage && npm run docs",
+    "sbom": "cyclonedx-npm --output-format JSON --output-file sbom.cdx.json --omit dev",
+    "bench": "npm run build && node benchmarks/run.mjs",
+    "mutate": "stryker run --inPlace",
+    "verify:full": "npm run verify && npm run sbom && npm run bench && npm run mutate"
+  },
+  "keywords": [
+    "robotico",
+    "resilience",
+    "retry",
+    "circuit-breaker",
+    "timeout"
+  ],
   "author": "Robotico",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/robotico-dev/robotico-resilience-typescript"
   },
+  "peerDependencies": {
+    "@robotico-dev/result": "^1.0.1"
+  },
   "devDependencies": {
-    "typescript": "^5.7.0"
+    "@robotico-dev/result": "file:../robotico-result-typescript",
+    "@cyclonedx/cyclonedx-npm": "^4.0.0",
+    "@eslint/js": "^9.0.0",
+    "@stryker-mutator/core": "^8.7.1",
+    "@stryker-mutator/vitest-runner": "^8.7.1",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "^9.0.0",
+    "fast-check": "^3.22.0",
+    "tinybench": "^2.9.0",
+    "typedoc": "^0.27.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.0.0"
   }
 }

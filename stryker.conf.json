@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker-js/master/packages/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "testRunner": "vitest",
+  "vitest": { "configFile": "vitest.config.ts" },
+  "coverageAnalysis": "perTest",
+  "timeoutMS": 120000,
+  "mutate": ["src/**/*.ts"],
+  "ignorePatterns": ["dist", "**/*.test.ts", "**/index.ts"],
+  "mutator": {
+    "excludedMutations": ["StringLiteral", "RegexLiteral"]
+  },
+  "reporters": ["html", "clear-text", "progress"],
+  "thresholds": { "high": 90, "low": 82, "break": 78 }
+}
