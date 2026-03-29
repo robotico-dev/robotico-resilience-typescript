@@ -18,7 +18,7 @@ export default defineConfig({
         "**/retry-options.ts",
         "**/retry-is-retryable.ts",
       ],
-      thresholds: { branches: 95, functions: 95, lines: 95, statements: 95 },
+      thresholds: { branches: 100, functions: 100, lines: 100, statements: 100 },
     },
   },
 });
