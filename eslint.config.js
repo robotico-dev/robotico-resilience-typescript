@@ -2,7 +2,7 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import roboticoTypePlugin from "../eslint-shared/plugin-one-top-level-type.mjs";
+import roboticoTypePlugin from "./eslint-shared/plugin-one-top-level-type.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
