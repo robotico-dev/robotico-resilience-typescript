@@ -55,7 +55,7 @@
     "@robotico-dev/result": "^1.0.1"
   },
   "devDependencies": {
-    "@robotico-dev/result": "file:../robotico-result-typescript",
+    "@robotico-dev/result": "^1.0.1",
     "@cyclonedx/cyclonedx-npm": "^4.0.0",
     "@eslint/js": "^9.0.0",
     "@stryker-mutator/core": "^8.7.1",
