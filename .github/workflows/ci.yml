@@ -24,7 +24,7 @@ jobs:
       - run: npm run docs
       - run: npm run sbom
       - run: npm run bench
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sbom-resilience-node-${{ matrix.node-version }}
           path: sbom.cdx.json
