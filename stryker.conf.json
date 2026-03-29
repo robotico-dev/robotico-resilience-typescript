@@ -3,7 +3,7 @@
   "packageManager": "npm",
   "testRunner": "vitest",
   "vitest": { "configFile": "vitest.config.ts" },
-  "coverageAnalysis": "perTest",
+  "coverageAnalysis": "all",
   "timeoutMS": 120000,
   "mutate": ["src/**/*.ts"],
   "ignorePatterns": ["dist", "**/*.test.ts", "**/index.ts"],

@@ -25,6 +25,8 @@ jobs:
           registry-url: https://npm.pkg.github.com
           scope: "@robotico-dev"
           cache: npm
+      - name: Authenticate npm with GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
       - run: npm ci
       - run: npm audit --audit-level=high
       - run: npm run lint
@@ -51,5 +53,7 @@ jobs:
           registry-url: https://npm.pkg.github.com
           scope: "@robotico-dev"
           cache: npm
+      - name: Authenticate npm with GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
       - run: npm ci
       - run: npm run mutate
