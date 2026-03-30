@@ -25,7 +25,6 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
-    "prepare": "npm run build",
     "build": "tsc",
     "clean": "node --input-type=module -e \"import fs from 'fs'; fs.rmSync('dist',{recursive:true,force:true});\"",
     "test": "vitest run",
