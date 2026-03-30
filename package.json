@@ -1,6 +1,6 @@
 {
   "name": "@robotico-dev/resilience",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Robotico Resilience — retry, circuit breaker, timeout for TypeScript.",
   "type": "module",
   "main": "dist/index.js",

@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-03-30
+
+### Added
+
+- `executeWithRetryOperation` — retry wrapper for async operations returning `Result` (`RetryResultOperationOptions`).
+
 ## [1.0.1] - 2026-03-29
 
 ### Added
