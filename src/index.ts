@@ -6,12 +6,14 @@
 
 export type { RetryIsRetryable } from "./retry-is-retryable.js";
 export type { RetryOptions } from "./retry-options.js";
+export type { RetryResultOperationOptions } from "./retry-result-operation-options.js";
 export type { CircuitBreakerSettings } from "./circuit-breaker-settings.js";
 export { CircuitOpenError } from "./circuit-open-error.js";
 export { OperationTimeoutError } from "./operation-timeout-error.js";
 export { CircuitBreaker } from "./circuit-breaker.js";
 export { executeWithRetry } from "./execute-with-retry.js";
 export { executeWithRetryResult } from "./execute-with-retry-result.js";
+export { executeWithRetryOperation } from "./execute-with-retry-operation.js";
 export { withTimeout } from "./with-timeout.js";
 export { withTimeoutResult } from "./with-timeout-result.js";
 export { sleepMs } from "./sleep-ms.js";

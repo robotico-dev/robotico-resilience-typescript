@@ -17,6 +17,7 @@ export default defineConfig({
         "**/circuit-breaker-settings.ts",
         "**/retry-options.ts",
         "**/retry-is-retryable.ts",
+        "**/retry-result-operation-options.ts",
       ],
       thresholds: { branches: 100, functions: 100, lines: 100, statements: 100 },
     },

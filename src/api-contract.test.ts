@@ -1,8 +1,11 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 import type { Result } from "@robotico-dev/result";
+import { successOf } from "@robotico-dev/result";
 import type { RetryIsRetryable } from "./retry-is-retryable.js";
 import type { RetryOptions } from "./retry-options.js";
+import type { RetryResultOperationOptions } from "./retry-result-operation-options.js";
 import { executeWithRetry } from "./execute-with-retry.js";
+import { executeWithRetryOperation } from "./execute-with-retry-operation.js";
 import { executeWithRetryResult } from "./execute-with-retry-result.js";
 import { withTimeoutResult } from "./with-timeout-result.js";
 import { RESILIENCE_VERSION } from "./resilience-version.js";
@@ -22,6 +25,15 @@ describe("API types", () => {
     ).resolves.toEqualTypeOf<Result<number>>();
     expectTypeOf(
       withTimeoutResult(Promise.resolve(1), 10)
+    ).resolves.toEqualTypeOf<Result<number>>();
+
+    const retryOp: RetryResultOperationOptions = {
+      maxAttempts: 2,
+      baseDelayMs: 1,
+      isRetryableError: () => true,
+    };
+    expectTypeOf(
+      executeWithRetryOperation(() => Promise.resolve(successOf(1)), retryOp)
     ).resolves.toEqualTypeOf<Result<number>>();
   });
 

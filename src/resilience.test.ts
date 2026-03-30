@@ -1,10 +1,20 @@
 import { describe, expect, it, vi } from "vitest";
-import { isError, isSuccess } from "@robotico-dev/result";
+import type { Result } from "@robotico-dev/result";
+import {
+  createSimpleError,
+  errorOf,
+  isError,
+  isErrorOf,
+  isSuccess,
+  isSuccessOf,
+  successOf,
+} from "@robotico-dev/result";
 import { abortReasonToError } from "./abort-reason-to-error.js";
 import {
   CircuitBreaker,
   CircuitOpenError,
   executeWithRetry,
+  executeWithRetryOperation,
   executeWithRetryResult,
   sleepMs,
   withTimeout,
@@ -319,6 +329,93 @@ describe("executeWithRetryResult", () => {
     });
     const r = await p;
     expect(isError(r)).toBe(true);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("executeWithRetryOperation", () => {
+  it("returns Ok on first success", async () => {
+    const r = await executeWithRetryOperation(
+      () => Promise.resolve(successOf(3)),
+      { maxAttempts: 2, baseDelayMs: 1 }
+    );
+    expect(isSuccessOf(r)).toBe(true);
+    if (isSuccessOf(r)) expect(r.value).toBe(3);
+  });
+
+  it("returns Err when maxAttempts < 1", async () => {
+    const r = await executeWithRetryOperation(
+      () => Promise.resolve(successOf(1)),
+      { maxAttempts: 0, baseDelayMs: 1 }
+    );
+    expect(isErrorOf(r)).toBe(true);
+  });
+
+  it("returns first Err when errors are not retryable", async () => {
+    const fn = vi.fn().mockResolvedValue(errorOf(createSimpleError("x")));
+    const r = await executeWithRetryOperation(fn, {
+      maxAttempts: 3,
+      baseDelayMs: 1,
+      isRetryableError: () => false,
+    });
+    expect(isErrorOf(r)).toBe(true);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not retry when isRetryableError is omitted (default never)", async () => {
+    const fn = vi.fn().mockResolvedValue(errorOf(createSimpleError("x")));
+    const r = await executeWithRetryOperation(fn, {
+      maxAttempts: 3,
+      baseDelayMs: 0,
+      maxDelayMs: 0,
+      jitterRatio: 0,
+    });
+    expect(isErrorOf(r)).toBe(true);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns the result unchanged when it is neither Ok nor Err", async () => {
+    const bad = { _tag: "other" } as unknown as Result<number>;
+    const r = await executeWithRetryOperation(() => Promise.resolve(bad), {
+      maxAttempts: 2,
+      baseDelayMs: 1,
+    });
+    expect(r).toBe(bad);
+  });
+
+  it("retries retryable Err then returns Ok", async () => {
+    const fn = vi
+      .fn()
+      .mockResolvedValueOnce(errorOf(createSimpleError("a")))
+      .mockResolvedValueOnce(errorOf(createSimpleError("b")))
+      .mockResolvedValueOnce(successOf(42));
+    const r = await executeWithRetryOperation(fn, {
+      maxAttempts: 5,
+      baseDelayMs: 0,
+      maxDelayMs: 0,
+      jitterRatio: 0,
+      isRetryableError: () => true,
+    });
+    expect(isSuccessOf(r)).toBe(true);
+    if (isSuccessOf(r)) expect(r.value).toBe(42);
+    expect(fn).toHaveBeenCalledTimes(3);
+  });
+
+  it("returns Err when backoff sleep aborts", async () => {
+    const ac = new AbortController();
+    const fn = vi
+      .fn()
+      .mockResolvedValue(errorOf(createSimpleError("transient")));
+    const p = executeWithRetryOperation(
+      fn,
+      { maxAttempts: 5, baseDelayMs: 60_000, isRetryableError: () => true },
+      ac.signal
+    );
+    queueMicrotask(() => {
+      ac.abort();
+    });
+    const r = await p;
+    expect(isErrorOf(r)).toBe(true);
     expect(fn).toHaveBeenCalledTimes(1);
   });
 });
